@@ -1,0 +1,7 @@
+{
+  "processors": [
+    {
+      "processor_type": "urumod:island_foundation"
+    }
+  ]
+}

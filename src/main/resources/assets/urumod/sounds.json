@@ -1,0 +1,26 @@
+{
+   "pan_idle": {
+      "subtitle": "sounds.urumod.pan_idle",
+      "sounds": [
+         "urumod:pan_idle"
+      ]
+   },
+   "pan_item_converted": {
+      "subtitle": "sounds.urumod.pan_item_converted",
+      "sounds": [
+         "urumod:pan_item_converted"
+      ]
+   },
+  "pan_place": {
+      "subtitle": "sounds.urumod.pan_place",
+      "sounds": [
+         "urumod:pan_place"
+      ]
+   },
+   "pan_metal": {
+        "subtitle": "sounds.urumod.pan_metal",
+        "sounds": [
+             "urumod:pan_metal"
+        ]
+   }
+}

@@ -1,0 +1,9 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "urumod:block/template_pan",
+	"textures": {
+		"1": "urumod:block/pan",
+		"particle": "urumod:block/pan",
+		"fritanga": "urumod:block/oil"
+	}
+}
