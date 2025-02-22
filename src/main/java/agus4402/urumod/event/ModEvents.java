@@ -1,4 +1,4 @@
-package agus4402.urumod;
+package agus4402.urumod.event;
 
 import agus4402.urumod.block.ModBlocks;
 import agus4402.urumod.block.custom.CampfireWithPan;

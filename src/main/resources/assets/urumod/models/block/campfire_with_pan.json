@@ -1,7 +1,0 @@
-{
-	"parent": "urumod:block/template_campfire",
-	"textures": {
-		"fire": "urumod:block/campfire_fire",
-		"lit_log": "urumod:block/campfire_log_lit"
-	}
-}

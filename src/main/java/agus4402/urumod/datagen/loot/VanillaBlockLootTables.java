@@ -17,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class ModBlockLootTables extends BlockLootSubProvider {
+public class VanillaBlockLootTables extends BlockLootSubProvider {
 
-	public ModBlockLootTables() {
+	public VanillaBlockLootTables() {
 		super(Set.of(), FeatureFlags.REGISTRY.allFlags());
 	}
 
@@ -30,7 +30,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 		// ? this.dropSelf(ModBlocks.MYSTERY_BLOCK.get());
 		this.dropSelf(ModBlocks.MYSTERY_BLOCK.get());
 		this.dropSelf(ModBlocks.PAN.get());
-//		this.dropOther(ModBlocks.CAMPFIRE_WITH_PAN.get(), Blocks.CAMPFIRE);
+		this.dropOther(ModBlocks.CAMPFIRE_WITH_PAN.get(), Blocks.CAMPFIRE);
 
 		// ? EXAMPLE:
 		// ? this.add(ModBlocks.MYSTERY_BLOCK.get(),

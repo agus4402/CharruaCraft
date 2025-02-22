@@ -2,9 +2,9 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"particle": "urumod:block/campfire_log",
-		"log": "urumod:block/campfire_log",
-		"supports": "urumod:block/campfire_supports"
+		"particle": "block/campfire_log",
+		"log": "block/campfire_log",
+		"pan_supports": "block/campfire_supports"
 	},
 	"elements": [
 		{
@@ -70,12 +70,12 @@
 			"to": [4, 17, 19],
 			"rotation": {"angle": -22.5, "axis": "x", "origin": [2, -1, 17]},
 			"faces": {
-				"north": {"uv": [0, 0, 1, 10], "texture": "#supports"},
-				"east": {"uv": [0, 0, 2, 10], "texture": "#supports"},
-				"south": {"uv": [0, 0, 1, 10], "texture": "#supports"},
-				"west": {"uv": [0, 0, 2, 10], "texture": "#supports"},
-				"up": {"uv": [2, 0, 3, 2], "texture": "#supports"},
-				"down": {"uv": [2, 0, 3, 2], "texture": "#supports"}
+				"north": {"uv": [0, 0, 1, 10], "texture": "#pan_supports"},
+				"east": {"uv": [0, 0, 2, 10], "texture": "#pan_supports"},
+				"south": {"uv": [0, 0, 1, 10], "texture": "#pan_supports"},
+				"west": {"uv": [0, 0, 2, 10], "texture": "#pan_supports"},
+				"up": {"uv": [2, 0, 3, 2], "texture": "#pan_supports"},
+				"down": {"uv": [2, 0, 3, 2], "texture": "#pan_supports"}
 			}
 		},
 		{
@@ -83,12 +83,12 @@
 			"to": [4, 18, -1],
 			"rotation": {"angle": 22.5, "axis": "x", "origin": [2, -1, -3]},
 			"faces": {
-				"north": {"uv": [1, 0, 0, 10], "texture": "#supports"},
-				"east": {"uv": [2, 0, 0, 10], "texture": "#supports"},
-				"south": {"uv": [1, 0, 0, 10], "texture": "#supports"},
-				"west": {"uv": [2, 0, 0, 10], "texture": "#supports"},
-				"up": {"uv": [3, 0, 2, 2], "texture": "#supports"},
-				"down": {"uv": [3, 0, 2, 2], "texture": "#supports"}
+				"north": {"uv": [1, 0, 0, 10], "texture": "#pan_supports"},
+				"east": {"uv": [2, 0, 0, 10], "texture": "#pan_supports"},
+				"south": {"uv": [1, 0, 0, 10], "texture": "#pan_supports"},
+				"west": {"uv": [2, 0, 0, 10], "texture": "#pan_supports"},
+				"up": {"uv": [3, 0, 2, 2], "texture": "#pan_supports"},
+				"down": {"uv": [3, 0, 2, 2], "texture": "#pan_supports"}
 			}
 		},
 		{
@@ -96,12 +96,12 @@
 			"to": [13, 17, 19],
 			"rotation": {"angle": -22.5, "axis": "x", "origin": [14, -1, 17]},
 			"faces": {
-				"north": {"uv": [0, 0, 1, 10], "texture": "#supports"},
-				"east": {"uv": [0, 0, 2, 10], "texture": "#supports"},
-				"south": {"uv": [0, 0, 1, 10], "texture": "#supports"},
-				"west": {"uv": [0, 0, 2, 10], "texture": "#supports"},
-				"up": {"uv": [3, 2, 2, 0], "texture": "#supports"},
-				"down": {"uv": [3, 0, 2, 2], "texture": "#supports"}
+				"north": {"uv": [0, 0, 1, 10], "texture": "#pan_supports"},
+				"east": {"uv": [0, 0, 2, 10], "texture": "#pan_supports"},
+				"south": {"uv": [0, 0, 1, 10], "texture": "#pan_supports"},
+				"west": {"uv": [0, 0, 2, 10], "texture": "#pan_supports"},
+				"up": {"uv": [3, 2, 2, 0], "texture": "#pan_supports"},
+				"down": {"uv": [3, 0, 2, 2], "texture": "#pan_supports"}
 			}
 		},
 		{
@@ -109,12 +109,12 @@
 			"to": [13, 18, -1],
 			"rotation": {"angle": 22.5, "axis": "x", "origin": [14, -1, -3]},
 			"faces": {
-				"north": {"uv": [0, 0, 1, 10], "texture": "#supports"},
-				"east": {"uv": [0, 0, 2, 10], "texture": "#supports"},
-				"south": {"uv": [0, 0, 1, 10], "texture": "#supports"},
-				"west": {"uv": [0, 0, 2, 10], "texture": "#supports"},
-				"up": {"uv": [3, 2, 2, 0], "texture": "#supports"},
-				"down": {"uv": [3, 0, 2, 2], "texture": "#supports"}
+				"north": {"uv": [0, 0, 1, 10], "texture": "#pan_supports"},
+				"east": {"uv": [0, 0, 2, 10], "texture": "#pan_supports"},
+				"south": {"uv": [0, 0, 1, 10], "texture": "#pan_supports"},
+				"west": {"uv": [0, 0, 2, 10], "texture": "#pan_supports"},
+				"up": {"uv": [3, 2, 2, 0], "texture": "#pan_supports"},
+				"down": {"uv": [3, 0, 2, 2], "texture": "#pan_supports"}
 			}
 		}
 	],

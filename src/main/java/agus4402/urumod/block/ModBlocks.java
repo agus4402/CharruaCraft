@@ -21,6 +21,11 @@ public class ModBlocks {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,
 			Urumod.MOD_ID);
 
+	public static final DeferredRegister<Block> VANILLA_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,
+			"minecraft");
+
+
+
 	// * NEW BLOCKS HERE * //
 
 	public static final RegistryObject<Block> MYSTERY_BLOCK = registerBlock("mystery_block",
@@ -30,7 +35,7 @@ public class ModBlocks {
 	public static final RegistryObject<Block> PAN = registerBlock("pan",
 			() -> new Pan(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().sound(ModSounds.PAN_SOUNDS)));
 
-	public static final RegistryObject<Block> CAMPFIRE_WITH_PAN = registerBlock("campfire_with_pan",
+	public static final RegistryObject<Block> CAMPFIRE_WITH_PAN = registerVanillaBlock("campfire",
 			() -> new CampfireWithPan(BlockBehaviour.Properties.copy(Blocks.CAMPFIRE).noOcclusion()));
 
 	// * ---------------- * //
@@ -50,8 +55,18 @@ public class ModBlocks {
 		return toReturn;
 	}
 
+	private static <T extends Block> RegistryObject<T> registerVanillaBlock(String name, Supplier<T> block) {
+		RegistryObject<T> toReturn = VANILLA_BLOCKS.register(name, block);
+		registerVanillaBlockItem(name, toReturn);
+		return toReturn;
+	}
+
 	public static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
 		return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+	}
+
+	public static <T extends Block> RegistryObject<Item> registerVanillaBlockItem(String name, RegistryObject<T> block) {
+		return ModItems.VANILLA_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
 	}
 
 	public static void register(IEventBus eventBus) {
