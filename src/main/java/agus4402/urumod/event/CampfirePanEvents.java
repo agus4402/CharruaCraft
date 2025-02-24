@@ -1,4 +1,4 @@
-package agus4402.urumod;
+package agus4402.urumod.event;
 
 import agus4402.urumod.block.ModBlocks;
 import agus4402.urumod.block.custom.CampfireWithPan;
@@ -14,7 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ModEvents {
+public class CampfirePanEvents {
     @SubscribeEvent
     public static void onBlockRemoved(BlockEvent.BreakEvent event) {
         Level world = (Level) event.getLevel();
@@ -26,7 +26,15 @@ public class ModEvents {
             BlockState belowState = world.getBlockState(belowPos);
 
             if (belowState.getBlock() instanceof CampfireWithPan) {
-                world.setBlock(belowPos, Blocks.CAMPFIRE.defaultBlockState(), 3);
+                world.setBlock(belowPos,
+                               Blocks.CAMPFIRE
+                                       .defaultBlockState()
+                                       .setValue(
+                                               CampfireBlock.FACING,
+                                               belowState.getValue(BlockStateProperties.HORIZONTAL_FACING)
+                                       ),
+                               3
+                );
             }
         }
     }
@@ -42,7 +50,14 @@ public class ModEvents {
             BlockState aboveState = world.getBlockState(abovePos);
 
             if (aboveState.getBlock() instanceof Pan) {
-                world.setBlock(pos, ModBlocks.CAMPFIRE_WITH_PAN.get().defaultBlockState().setValue(BlockStateProperties.LIT, placedBlock.getValue(BlockStateProperties.LIT)), 3);
+                world.setBlock(
+                        pos,
+                        ModBlocks.CAMPFIRE_WITH_PAN
+                                .get()
+                                .defaultBlockState()
+                                .setValue(BlockStateProperties.LIT, placedBlock.getValue(BlockStateProperties.LIT)),
+                        3
+                );
             }
         }
 
@@ -51,7 +66,15 @@ public class ModEvents {
             BlockState belowState = world.getBlockState(belowPos);
 
             if (belowState.getBlock() instanceof CampfireBlock) {
-                world.setBlock(belowPos, ModBlocks.CAMPFIRE_WITH_PAN.get().defaultBlockState().setValue(BlockStateProperties.LIT, belowState.getValue(BlockStateProperties.LIT)), 3);
+                world.setBlock(
+                        belowPos,
+                        ModBlocks.CAMPFIRE_WITH_PAN
+                                .get()
+                                .defaultBlockState()
+                                .setValue(BlockStateProperties.LIT, belowState.getValue(BlockStateProperties.LIT))
+                                .setValue(CampfireWithPan.FACING, belowState.getValue(BlockStateProperties.HORIZONTAL_FACING)),
+                        3
+                );
             }
         }
     }
