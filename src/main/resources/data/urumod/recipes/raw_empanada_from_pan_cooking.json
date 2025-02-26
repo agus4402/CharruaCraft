@@ -1,0 +1,12 @@
+{
+  "type": "urumod:pan_cooking",
+  "ingredients": [
+    {
+      "item": "urumod:raw_empanada"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "urumod:empanada"
+  }
+}

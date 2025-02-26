@@ -11,4 +11,13 @@ public class ModFoods {
 
     public static final FoodProperties CHIVITO =
             new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).build();
+
+    public static final FoodProperties EMPANADA =
+            new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).build();
+
+    public static final FoodProperties RAW_EMPANADA =
+            new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).build();
+
+    public static final FoodProperties RICARDITO =
+            new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).build();
 }

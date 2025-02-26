@@ -24,8 +24,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         // * NEW BLOCKS HERE * //
 
-        blockWithItem(ModBlocks.MYSTERY_BLOCK);
-//		blockWithModel("block/pan", ModBlocks.PAN.get());
         generateCampfireVariants(ModBlocks.CAMPFIRE_WITH_PAN.get());
         modelBlockWith2States(
                 ModBlocks.PAN.get(),

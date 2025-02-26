@@ -23,10 +23,6 @@ public class ModBlocks {
 
 	// * NEW BLOCKS HERE * //
 
-	public static final RegistryObject<Block> MYSTERY_BLOCK = registerBlock("mystery_block",
-			() -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)
-					.requiresCorrectToolForDrops()));
-
 	public static final RegistryObject<Block> PAN = registerBlock("pan",
 			() -> new Pan(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().sound(ModSounds.PAN_SOUNDS)));
 

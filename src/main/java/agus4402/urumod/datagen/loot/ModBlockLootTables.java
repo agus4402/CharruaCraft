@@ -27,7 +27,6 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 	protected void generate() {
 		// * NEW LOOT TABLES HERE * //
 
-		this.dropSelf(ModBlocks.MYSTERY_BLOCK.get());
 		this.dropSelf(ModBlocks.PAN.get());
 		this.dropOther(ModBlocks.CAMPFIRE_WITH_PAN.get(), Blocks.CAMPFIRE);
 
