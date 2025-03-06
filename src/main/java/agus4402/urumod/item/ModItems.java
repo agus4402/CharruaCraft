@@ -46,6 +46,10 @@ public class ModItems {
                                                                            () -> new FuelItem(new Item.Properties(), 500)
     );
 
+    public static final RegistryObject<Item> FAT = ITEMS.register("fat",
+                                                                         () -> new FuelItem(new Item.Properties(), 600)
+    );
+
     // * -------------- * //
 
     // ? EXAMPLE ITEM

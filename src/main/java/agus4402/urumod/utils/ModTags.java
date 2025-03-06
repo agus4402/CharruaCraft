@@ -12,8 +12,6 @@ public class ModTags {
 	public static class Blocks {
 		// * NEW TAGS HERE * //
 
-
-
 		// * ------------- * //
 
 		// ? EXAMPLE: public static final TagKey<Block> EXAMPLE_TAG = createTag("example_tag");
@@ -24,6 +22,10 @@ public class ModTags {
 	}
 
 	public static class Items {
+
+		public static final TagKey<Item> PAN_OIL = createTag("pan_oil");
+
+		// ? EXAMPLE: public static final TagKey<Item> EXAMPLE_TAG = createTag("example_tag");
 
 		private static TagKey<Item> createTag(String name) {
 			return ItemTags.create(new ResourceLocation(Urumod.MOD_ID, name));

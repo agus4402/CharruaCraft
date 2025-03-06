@@ -1,0 +1,10 @@
+{
+  "processors": [
+    {
+      "processor_type": "urumod:entity_replacement",
+      "replace": "minecraft:horse",
+      "with": "minecraft:donkey",
+      "probability": 0.3
+    }
+  ]
+}

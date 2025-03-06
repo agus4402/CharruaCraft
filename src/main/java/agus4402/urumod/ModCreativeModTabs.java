@@ -29,7 +29,10 @@ public class ModCreativeModTabs {
 						output.accept(new ItemStack(ModItems.RICARDITO.get()));
 						output.accept(new ItemStack(ModItems.EMPANADA.get()));
 						output.accept(new ItemStack(ModItems.RAW_EMPANADA.get()));
+						output.accept(new ItemStack(ModItems.EMPANADA_DOUGH.get()));
 						output.accept(new ItemStack(ModBlocks.PAN.get()));
+						output.accept(new ItemStack(ModItems.OIL_BOTTLE.get()));
+						output.accept(new ItemStack(ModItems.FAT.get()));
 
 						// * -------------- * //
 					}))

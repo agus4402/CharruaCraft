@@ -6,6 +6,7 @@ import agus4402.urumod.item.custom.FuelItem;
 import agus4402.urumod.recipe.PanRecipe;
 import agus4402.urumod.screen.PanMenu;
 import agus4402.urumod.sound.ModSounds;
+import agus4402.urumod.utils.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -70,7 +72,7 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
             }
 
             if (slot == OIL_SLOT) {
-                return stack.getItem() instanceof FuelItem;
+                return isCompatibleFuel(stack);
             }
 
             return super.isItemValid(slot, stack);
@@ -279,10 +281,12 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
         Optional<PanRecipe> recipe = getCurrentRecipe();
         ItemStack result = recipe.get().getResultItem(null);
         this.itemHandler.extractItem(INPUT_SLOT, 1, false);
-        this.itemHandler.setStackInSlot(OUTPUT_SLOT,
-                                        new ItemStack(result.getItem(),
-                                                      result.getCount() + this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount()
-                                        )
+        this.itemHandler.setStackInSlot(
+                OUTPUT_SLOT,
+                new ItemStack(
+                        result.getItem(),
+                        result.getCount() + this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount()
+                )
         );
     }
 
@@ -318,12 +322,18 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
 
     private void refillOil() {
         ItemStack fuel = itemHandler.getStackInSlot(OIL_SLOT);
-        if (!fuel.isEmpty() && oilBurnTime <= 0) {
+
+        if (isCompatibleFuel(fuel) && !fuel.isEmpty() && oilBurnTime <= 0) {
             oilBurnTime = ((FuelItem) fuel.getItem()).getBurnTime();
             totalOilBurnTime = oilBurnTime;
             itemHandler.extractItem(OIL_SLOT, 1, false);
         }
     }
+
+    public boolean isCompatibleFuel(ItemStack fuel){
+        return fuel.is(ModTags.Items.PAN_OIL) && fuel.getItem() instanceof  FuelItem;
+    }
+
 
     private void increaseProgress() {
         progress++;

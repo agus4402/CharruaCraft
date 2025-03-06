@@ -79,7 +79,7 @@ public class VillageAddition {
                 processorListRegistry,
                 new ResourceLocation("minecraft:village/plains/houses"),
                 "urumod:farm_1",
-                100,
+                60,
                 new ResourceLocation("minecraft:farm_plains")
         );
         addBuildingToPool(
@@ -87,8 +87,16 @@ public class VillageAddition {
                 processorListRegistry,
                 new ResourceLocation("minecraft:village/plains/houses"),
                 "urumod:farm_medium_1",
-                250,
+                60,
                 new ResourceLocation("minecraft:farm_plains")
+        );
+        addBuildingToPool(
+                templatePoolRegistry,
+                processorListRegistry,
+                new ResourceLocation("minecraft:village/plains/houses"),
+                "urumod:stable",
+                60,
+                new ResourceLocation("urumod:replace_horse_with_donkey")
         );
 
         StructureProcessor cropProcessor = new RuleProcessor(List.of(
