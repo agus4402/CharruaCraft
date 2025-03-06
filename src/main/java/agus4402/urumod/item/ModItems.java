@@ -1,6 +1,7 @@
 package agus4402.urumod.item;
 
 import agus4402.urumod.Urumod;
+import agus4402.urumod.item.custom.FuelItem;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -39,6 +40,10 @@ public class ModItems {
 
     public static final RegistryObject<Item> EMPANADA_DOUGH = ITEMS.register("empanada_dough",
                                                                            () -> new Item(new Item.Properties().food(ModFoods.RAW_EMPANADA))
+    );
+
+    public static final RegistryObject<Item> OIL_BOTTLE = ITEMS.register("oil_bottle",
+                                                                           () -> new FuelItem(new Item.Properties(), 500)
     );
 
     // * -------------- * //

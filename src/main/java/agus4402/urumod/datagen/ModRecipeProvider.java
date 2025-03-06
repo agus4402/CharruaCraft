@@ -54,6 +54,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.WHEAT), has(Items.WHEAT))
                 .save(pWriter);
 
+        ShapelessRecipeBuilder
+                .shapeless(RecipeCategory.FOOD, ModItems.OIL_BOTTLE.get(), 2)
+                .requires(Items.WHEAT)
+                .requires(Items.WATER_BUCKET)
+                .unlockedBy(getHasName(Items.WHEAT), has(Items.WHEAT))
+                .save(pWriter);
+
         // * ---------------- * //
 
         // ? SHAPED EXAMPLE:

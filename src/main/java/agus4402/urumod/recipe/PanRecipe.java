@@ -16,6 +16,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class PanRecipe implements Recipe<SimpleContainer> {
 
+    private final static int INGREDIENTS_SIZE = 1;
+    private final static String RECIPE_PATH = "pan_cooking";
+
     private final NonNullList<Ingredient> inputItems;
     private final ItemStack output;
     private final ResourceLocation id;
@@ -24,6 +27,11 @@ public class PanRecipe implements Recipe<SimpleContainer> {
         this.inputItems = inputItems;
         this.output = output;
         this.id = id;
+    }
+
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return inputItems;
     }
 
     @Override
@@ -64,18 +72,18 @@ public class PanRecipe implements Recipe<SimpleContainer> {
 
     public static class Type implements RecipeType<PanRecipe>{
         public static final Type INSTANCE = new Type();
-        public static final String ID = "pan_cooking";
+        public static final String ID = RECIPE_PATH;
     }
 
     public static class Serializer implements RecipeSerializer<PanRecipe>{
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(Urumod.MOD_ID, "pan_cooking");
+        public static final ResourceLocation ID = new ResourceLocation(Urumod.MOD_ID, RECIPE_PATH);
 
         @Override
         public PanRecipe fromJson(ResourceLocation resourceLocation, JsonObject serializedRecipe) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(serializedRecipe, "result"));
             JsonArray ingredients = GsonHelper.getAsJsonArray(serializedRecipe, "ingredients");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
+            NonNullList<Ingredient> inputs = NonNullList.withSize(INGREDIENTS_SIZE, Ingredient.EMPTY);
             for (int i = 0; i < inputs.size(); i++){
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }

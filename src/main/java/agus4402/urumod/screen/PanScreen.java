@@ -10,8 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class PanScreen extends AbstractContainerScreen<PanMenu> {
-    private static final ResourceLocation TEXTURE =
-            new ResourceLocation(Urumod.MOD_ID, "textures/gui/pan_gui.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Urumod.MOD_ID, "textures/gui/pan_gui.png");
 
     public PanScreen(PanMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -35,10 +34,15 @@ public class PanScreen extends AbstractContainerScreen<PanMenu> {
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
         renderProgressArrow(guiGraphics, x, y);
+        renderBurnArrow(guiGraphics, x, y);
+    }
+
+    private void renderBurnArrow(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.blit(TEXTURE, x + 78, y + 51, 176, 13, menu.getScaleBurnTime(18), 4);
     }
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isCrafting()) {
+        if (menu.isCrafting()) {
             guiGraphics.blit(TEXTURE, x + 79, y + 30, 176, 0, menu.getScaledProgress(19), 13);
         }
     }

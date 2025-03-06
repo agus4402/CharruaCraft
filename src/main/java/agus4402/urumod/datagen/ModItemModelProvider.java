@@ -27,6 +27,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		simpleItem(ModItems.EMPANADA);
 		simpleItem(ModItems.RAW_EMPANADA);
 		simpleItem(ModItems.EMPANADA_DOUGH);
+		simpleItem(ModItems.OIL_BOTTLE);
 
 		// * -------------- * //
 

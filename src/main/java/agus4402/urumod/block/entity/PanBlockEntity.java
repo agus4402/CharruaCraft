@@ -2,11 +2,13 @@ package agus4402.urumod.block.entity;
 
 import agus4402.urumod.block.ModBlocks;
 import agus4402.urumod.block.custom.Pan;
+import agus4402.urumod.item.custom.FuelItem;
 import agus4402.urumod.recipe.PanRecipe;
 import agus4402.urumod.screen.PanMenu;
 import agus4402.urumod.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -22,6 +24,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,14 +39,18 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class PanBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(2){
+
+    private static final int CONTAINER_SIZE = 3;
+    private final ItemStackHandler itemHandler = new ItemStackHandler(CONTAINER_SIZE) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if(!level.isClientSide()){
+            if (!level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -57,29 +65,43 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
                 return false;
             }
 
-            // INPUT_SLOT validation
             if (slot == INPUT_SLOT) {
-                SimpleContainer testInventory = createTestInventory(stack);
-                return level.getRecipeManager().getRecipeFor(PanRecipe.Type.INSTANCE, testInventory, level).isPresent();
+                return isValidIngredientForAnyRecipe(stack, 0);
+            }
+
+            if (slot == OIL_SLOT) {
+                return stack.getItem() instanceof FuelItem;
             }
 
             return super.isItemValid(slot, stack);
         }
-
-        private SimpleContainer createTestInventory(ItemStack stack) {
-            SimpleContainer testInventory = new SimpleContainer(this.getSlots());
-            testInventory.setItem(INPUT_SLOT, stack.copy());
-            testInventory.setItem(OUTPUT_SLOT, this.getStackInSlot(OUTPUT_SLOT).copy());
-            return testInventory;
-        }
     };
+
+    private boolean isValidIngredientForAnyRecipe(ItemStack stack, int ingredientIndex) {
+        List<PanRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(PanRecipe.Type.INSTANCE);
+
+        for (Recipe<?> recipe : allRecipes) {
+            if (recipe instanceof PanRecipe) {
+                List<Ingredient> ingredients = ((PanRecipe) recipe).getIngredients();
+                if (ingredients.size() > ingredientIndex) {
+                    if (ingredients.get(ingredientIndex).test(stack)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false; // The stack is not a valid ingredient for any recipe.
+    }
 
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
+    private static final int OIL_SLOT = 2;
 
     private final ContainerData data;
     private int progress = 0;
     private int totalProgress = 200;
+    private int oilBurnTime = 0;
+    private int totalOilBurnTime = 0;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
@@ -91,35 +113,40 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
                 return switch (i) {
                     case 0 -> PanBlockEntity.this.progress;
                     case 1 -> PanBlockEntity.this.totalProgress;
+                    case 2 -> PanBlockEntity.this.oilBurnTime;
+                    case 3 -> PanBlockEntity.this.totalOilBurnTime;
                     default -> 0;
                 };
             }
+
             @Override
             public void set(int i, int i1) {
                 switch (i) {
                     case 0 -> PanBlockEntity.this.progress = i1;
                     case 1 -> PanBlockEntity.this.totalProgress = i1;
+                    case 2 -> PanBlockEntity.this.oilBurnTime = i1;
+                    case 3 -> PanBlockEntity.this.totalOilBurnTime = i1;
                 }
             }
+
             @Override
             public int getCount() {
-                return 2;
+                return 4;
             }
         };
     }
 
-    public ItemStack getRenderStack(){
-        if(itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty()){
+    public ItemStack getRenderStack() {
+        if (itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty()) {
             return itemHandler.getStackInSlot(INPUT_SLOT);
-        }
-        else{
+        } else {
             return itemHandler.getStackInSlot(OUTPUT_SLOT);
         }
     }
 
-    public void drops(){
+    public void drops() {
         SimpleContainer inv = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i  < itemHandler.getSlots(); i++){
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
             inv.setItem(i, itemHandler.getStackInSlot(i));
         }
         assert this.level != null;
@@ -163,6 +190,8 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
         super.saveAdditional(pTag);
         pTag.put("inventory", itemHandler.serializeNBT());
         pTag.putInt("urumod.pan.progress", progress);
+        pTag.putInt("urumod.pan.oilBurnTime", oilBurnTime);
+        pTag.putInt("urumod.pan.totalOilBurnTime", totalOilBurnTime);
     }
 
     @Override
@@ -170,6 +199,8 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
         super.load(pTag);
         itemHandler.deserializeNBT(pTag.getCompound("inventory"));
         progress = pTag.getInt("urumod.pan.progress");
+        oilBurnTime = pTag.getInt("urumod.pan.oilBurnTime");
+        totalOilBurnTime = pTag.getInt("urumod.pan.totalOilBurnTime");
     }
 
     @Nullable
@@ -184,26 +215,32 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        if (hasRecipe() && hasFuel(blockPos)) {
+        refillOil();
+        if (hasRecipe() && hasFuel(blockPos) && hasOil()) {
             playIdleSound(level, blockPos, blockState);
             increaseProgress();
+            increaseOilBurnTime();
             Pan pan = (Pan) blockState.getBlock();
             pan.setValue(blockState, level, blockPos, true);
-            setChanged(level,blockPos,blockState);
-            if(hasProgressFinished()) {
+            setChanged(level, blockPos, blockState);
+            if (hasProgressFinished()) {
                 convertItem();
                 playItemConvertedSound(level, blockPos, blockState);
                 resetProgress();
             }
         } else {
             Block blockBelow = level.getBlockState(blockPos.below()).getBlock();
-            if(blockBelow  == ModBlocks.CAMPFIRE_WITH_PAN.get()){
+            if (blockBelow == ModBlocks.CAMPFIRE_WITH_PAN.get()) {
                 Pan pan = (Pan) blockState.getBlock();
                 pan.setValue(blockState, level, blockPos, false);
-                setChanged(level,blockPos,blockState);
+                setChanged(level, blockPos, blockState);
             }
             resetProgress();
         }
+    }
+
+    private boolean hasOil() {
+        return oilBurnTime > 0;
     }
 
     private void playItemConvertedSound(Level level, BlockPos blockPos, BlockState blockState) {
@@ -218,7 +255,9 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
 
     private boolean hasFuel(BlockPos blockPos) {
         Block blockBelow = level.getBlockState(blockPos.below()).getBlock();
-        return blockBelow  == ModBlocks.CAMPFIRE_WITH_PAN.get() && level.getBlockState(blockPos.below()).getValue(BlockStateProperties.LIT);
+        return blockBelow == ModBlocks.CAMPFIRE_WITH_PAN.get() && level
+                .getBlockState(blockPos.below())
+                .getValue(BlockStateProperties.LIT);
     }
 
     private boolean hasRecipe() {
@@ -240,23 +279,50 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
         Optional<PanRecipe> recipe = getCurrentRecipe();
         ItemStack result = recipe.get().getResultItem(null);
         this.itemHandler.extractItem(INPUT_SLOT, 1, false);
-        this.itemHandler.setStackInSlot(OUTPUT_SLOT, new ItemStack(result.getItem(),
-                result.getCount() + this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount()));
+        this.itemHandler.setStackInSlot(OUTPUT_SLOT,
+                                        new ItemStack(result.getItem(),
+                                                      result.getCount() + this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount()
+                                        )
+        );
     }
+
     private boolean canInsertItemIntoOutputSlot(Item item) {
         return this.itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() || this.itemHandler.getStackInSlot(OUTPUT_SLOT).is(item);
     }
 
     private boolean canInsertAmountIntoOutputSlot(int count) {
-        return this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + count <= this.itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
+        return this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + count <= this.itemHandler
+                .getStackInSlot(OUTPUT_SLOT)
+                .getMaxStackSize();
     }
 
     private void resetProgress() {
         progress = 0;
     }
 
+    private void resetOilBurnTime() {
+        oilBurnTime = 0;
+    }
+
     private boolean hasProgressFinished() {
         return progress >= totalProgress;
+    }
+
+    private void increaseOilBurnTime() {
+        if (oilBurnTime > 0) {
+            oilBurnTime--;
+        } else {
+            refillOil();
+        }
+    }
+
+    private void refillOil() {
+        ItemStack fuel = itemHandler.getStackInSlot(OIL_SLOT);
+        if (!fuel.isEmpty() && oilBurnTime <= 0) {
+            oilBurnTime = ((FuelItem) fuel.getItem()).getBurnTime();
+            totalOilBurnTime = oilBurnTime;
+            itemHandler.extractItem(OIL_SLOT, 1, false);
+        }
     }
 
     private void increaseProgress() {
