@@ -4,6 +4,7 @@ import agus4402.urumod.processor.ModProcessors;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class EntityReplacementProcessor extends StructureProcessor {
     public static final Codec<EntityReplacementProcessor> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -25,6 +28,9 @@ public class EntityReplacementProcessor extends StructureProcessor {
     private final ResourceLocation replace;
     private final ResourceLocation with;
     private final Double probability;
+
+    // Set para almacenar entidades ya procesadas
+    private static final Set<String> processedEntities = new HashSet<>();
 
     public EntityReplacementProcessor(ResourceLocation replace, ResourceLocation with, Double probability) {
         this.replace = replace;
@@ -39,20 +45,26 @@ public class EntityReplacementProcessor extends StructureProcessor {
                                                                StructureTemplate.StructureEntityInfo entityInfo,
                                                                StructurePlaceSettings placementSettings,
                                                                StructureTemplate template) {
-         try {
-             double p = 1;
-             if(!Double.isNaN(this.probability)){
-                p = this.probability;
-             }
-             if (Math.random() < p && entityInfo.nbt.getString("id").equals(replace.toString())) {
-                 entityInfo.nbt.putString("id", with.toString());
-             }
-         }catch (Exception e){
-                throw  new IllegalArgumentException(e.getMessage());
-         }
+        CompoundTag entityNBT = entityInfo.nbt.copy();
+        try {
+            double p = probability;
+            double random = Math.random();
+            String id = seedPos.toString() + entityInfo.nbt.get("UUID");
+            if (!processedEntities.contains(id)) {
+                System.out.println("id: " + id);
+                System.out.println("probability: " + p);
+                System.out.println("random: " + random + " pos: " + seedPos.toString());
+                if (random < p && entityNBT.getString("id").equals(replace.toString())) {
+                    entityNBT.putString("id", with.toString());
+                }
+                processedEntities.add(id);
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
 
 
-        return entityInfo;
+        return new StructureTemplate.StructureEntityInfo(entityInfo.pos, entityInfo.blockPos, entityNBT);
     }
 
     @Override

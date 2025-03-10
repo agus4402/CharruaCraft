@@ -95,7 +95,7 @@ public class VillageAddition {
                 processorListRegistry,
                 new ResourceLocation("minecraft:village/plains/houses"),
                 "urumod:stable",
-                60,
+                130,
                 new ResourceLocation("urumod:replace_horse_with_donkey")
         );
 
