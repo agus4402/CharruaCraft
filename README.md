@@ -1,10 +1,10 @@
-# Urumod
+# CharruaCraft
 
 A mod featuring Uruguayan food, structures, and more!
 
 ## Description
 
-Urumod brings the rich culture and flavors of Uruguay into your Minecraft world. From traditional dishes to iconic structures, discover and enjoy the unique aspects of Uruguayan life.
+CharruaCraft brings the rich culture and flavors of Uruguay into your Minecraft world. From traditional dishes to iconic structures, discover and enjoy the unique aspects of Uruguayan life.
 
 ## Features
 
