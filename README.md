@@ -31,6 +31,6 @@ CharruaCraft brings the rich culture and flavors of Uruguay into your Minecraft 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/agus4402/Urumod/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/agus4402/CharruaCraft/blob/main/LICENSE) file for details.
 
 ---
