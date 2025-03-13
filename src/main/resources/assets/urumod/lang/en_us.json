@@ -9,5 +9,8 @@
   "item.urumod.empanada": "Empanada",
   "item.urumod.raw_empanada": "Raw Empanada",
   "item.urumod.fat": "Animal Fat",
-  "block.urumod.campfire_with_pan": "Campfire(Supports)"
+  "block.urumod.campfire_with_pan": "Campfire(Supports)",
+
+  "_comment": "Config",
+  "config.urumod.capybara_looks_into_player": "Capybara looks into player"
 }

@@ -31,7 +31,6 @@ public class IslandFoundationProcessor extends StructureProcessor {
     ) {
         if (level instanceof LevelAccessor levelAccessor) {
             BlockPos below = transformedInfo.pos().below();
-
             if (level.getBlockState(below).getBlock() == Blocks.WATER) {
                 generateIsland(levelAccessor, below);
             }

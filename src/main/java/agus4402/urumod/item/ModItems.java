@@ -1,9 +1,10 @@
 package agus4402.urumod.item;
 
 import agus4402.urumod.Urumod;
+import agus4402.urumod.entity.ModEntities;
 import agus4402.urumod.item.custom.FuelItem;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -49,6 +50,10 @@ public class ModItems {
     public static final RegistryObject<Item> FAT = ITEMS.register("fat",
                                                                          () -> new FuelItem(new Item.Properties(), 600)
     );
+
+    public static final RegistryObject<Item> CAPYBARA_SPAWN_EGG = ITEMS.register("capybara_spawn_egg",
+                                                                                 () -> new ForgeSpawnEggItem(ModEntities.CAPYBARA, 0xD57E36, 0x1D0D00,
+                                                                                                          new Item.Properties()));
 
     // * -------------- * //
 

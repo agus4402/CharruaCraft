@@ -37,7 +37,6 @@ public class ModifyHorseProcessor extends StructureProcessor {
             return super.processEntity(world,seedPos,rawEntityInfo,entityInfo,placementSettings,template);
         }
 
-
         if (entityInfo.nbt.getString("id").equals("minecraft:horse")) {
             entityInfo.nbt.putInt("variant", v1);
         }
