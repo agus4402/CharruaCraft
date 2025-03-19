@@ -49,7 +49,7 @@ jobs:
       #     name: ForgeMod
       #     path: build/libs/*.jar
       - name: Buscar gradle.properties
-        run: find . -name "gradle.properties"
+        run: find . -name "gradle.propertiess"
 
       - name: Read mod_version from gradle.properties
         id: version
