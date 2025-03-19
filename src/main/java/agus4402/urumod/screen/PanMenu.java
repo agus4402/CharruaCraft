@@ -18,12 +18,12 @@ public class PanMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public PanMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     public PanMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.PAN_MENU.get(), pContainerId);
-        checkContainerSize(inv, 2);
+        checkContainerSize(inv, 3);
         blockEntity = ((PanBlockEntity) entity);
         this.level = inv.player.level();
         this.data = data;
@@ -34,6 +34,7 @@ public class PanMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
             this.addSlot(new SlotItemHandler(iItemHandler, 0, 51, 29));
             this.addSlot(new SlotItemHandler(iItemHandler, 1, 109, 29));
+            this.addSlot(new SlotItemHandler(iItemHandler, 2, 79, 59));
         });
 
         addDataSlots(data);
@@ -41,6 +42,22 @@ public class PanMenu extends AbstractContainerMenu {
 
     public boolean isCrafting() {
         return data.get(0) > 0;
+    }
+
+    public boolean isBurning() {
+        return data.get(2) > 0;
+    }
+
+    @Override
+    public void setData(int pId, int pData) {
+        this.data.set(pId, pData);
+    }
+
+    public int getScaleBurnTime(int burnArrowSize) {
+        int burnTime = this.data.get(2);
+        int maxBurnTime = this.data.get(3);  // Max Burn Time
+
+        return maxBurnTime != 0 && burnTime != 0 ? burnTime * burnArrowSize / maxBurnTime : 0;
     }
 
     public int getScaledProgress(int progressArrowSize) {
@@ -66,7 +83,7 @@ public class PanMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
     @Override
     public ItemStack quickMoveStack(Player playerIn, int pIndex) {
         Slot sourceSlot = slots.get(pIndex);

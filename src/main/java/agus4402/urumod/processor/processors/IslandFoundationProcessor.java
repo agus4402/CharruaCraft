@@ -31,8 +31,6 @@ public class IslandFoundationProcessor extends StructureProcessor {
     ) {
         if (level instanceof LevelAccessor levelAccessor) {
             BlockPos below = transformedInfo.pos().below();
-
-            // Si el bloque debajo es agua, comenzar a generar la isla
             if (level.getBlockState(below).getBlock() == Blocks.WATER) {
                 generateIsland(levelAccessor, below);
             }
@@ -41,8 +39,8 @@ public class IslandFoundationProcessor extends StructureProcessor {
     }
 
     private void generateIsland(LevelAccessor level, BlockPos pos) {
-        int radius = 3; // Radio de la isla
-        int height = 2; // Altura de la isla
+        int radius = 3;
+        int height = 2;
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {

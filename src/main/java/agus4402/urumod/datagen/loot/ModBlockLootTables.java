@@ -26,17 +26,16 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 	@Override
 	protected void generate() {
 		// * NEW LOOT TABLES HERE * //
-		// ? EXAMPLE:
-		// ? this.dropSelf(ModBlocks.MYSTERY_BLOCK.get());
-		this.dropSelf(ModBlocks.MYSTERY_BLOCK.get());
+
 		this.dropSelf(ModBlocks.PAN.get());
 		this.dropOther(ModBlocks.CAMPFIRE_WITH_PAN.get(), Blocks.CAMPFIRE);
 
 		// ? EXAMPLE:
+		// ? this.dropSelf(ModBlocks.MYSTERY_BLOCK.get());
+
+		// ? EXAMPLE:
 		// ? this.add(ModBlocks.MYSTERY_BLOCK.get(),
 		// ?	block -> createOreDrops(block, ModItems.MYSTERY_ITEM.get(), 1, 4));
-
-
 
 		// * -------------------- * //
 	}

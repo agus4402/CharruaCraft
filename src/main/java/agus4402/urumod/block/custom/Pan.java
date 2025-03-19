@@ -47,8 +47,6 @@ public class Pan extends BaseEntityBlock {
 
     @Override
     public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
-        System.out.println("onNeighborChange");
-        System.out.println(state.getBlock().getName());
     }
 
     @Override
@@ -67,6 +65,7 @@ public class Pan extends BaseEntityBlock {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof PanBlockEntity) {
                 NetworkHooks.openScreen(((ServerPlayer)pPlayer), (PanBlockEntity)entity, pPos);
+                return InteractionResult.SUCCESS;
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

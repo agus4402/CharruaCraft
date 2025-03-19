@@ -23,6 +23,14 @@ public class ModItemModelProvider extends ItemModelProvider {
 		simpleItem(ModItems.TORTA_FRITA);
 		simpleItem(ModItems.RAW_TORTA_FRITA);
 		simpleItem(ModItems.CHIVITO);
+		simpleItem(ModItems.RICARDITO);
+		simpleItem(ModItems.EMPANADA);
+		simpleItem(ModItems.RAW_EMPANADA);
+		simpleItem(ModItems.EMPANADA_DOUGH);
+		simpleItem(ModItems.OIL_BOTTLE);
+		simpleItem(ModItems.FAT);
+		withExistingParent(ModItems.CAPYBARA_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+		withExistingParent(ModItems.MOCKINGBIRD_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
 
 		// * -------------- * //
 
