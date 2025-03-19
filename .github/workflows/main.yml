@@ -10,7 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    outputs:
+      mod_version: ${{ steps.get_mod_version.outputs.mod_version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -50,11 +51,12 @@ jobs:
       #     path: build/libs/*.jar
 
       - name: Extraer mod_version de gradle.properties
-        id: version
+        id: get_mod_version
+        
         run: |
           MOD_VERSION=$(grep '^mod_version=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
-          echo "MOD_VERSION=$MOD_VERSION"
-          echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_OUTPUT
+          echo "mod_version=$MOD_VERSION"
+          echo "mod_version=$MOD_VERSION" >> $GITHUB_OUTPUT
           
   release:
     needs: build
