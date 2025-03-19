@@ -54,8 +54,7 @@ jobs:
         run: |
           # Obtener la versión del archivo gradle.properties
           MOD_VERSION=$(grep '^mod_version=' gradle.properties | cut -d'=' -f2)
-          echo "mod_version=$MOD_VERSION" >> $GITHUB_ENV
-          echo "mod_version=$MOD_VERSION" >> $GITHUB_OUTPUT
+          echo "MOD_VERSION_OUTPUT=$MOD_VERSION" >> $GITHUB_ENV
           
   release:
     needs: build
@@ -73,13 +72,13 @@ jobs:
 
       - name: Tag
         run: |
-          git tag ${{ needs.build.outputs.mod_version }}
-          git push origin ${{ needs.build.outputs.mod_version }}
+          git tag "${{ env.MOD_VERSION_OUTPUT }}"
+          git push origin "${{ env.MOD_VERSION_OUTPUT }}"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ needs.build.outputs.mod_version }}
+          tag_name: ${{ env.MOD_VERSION_OUTPUT }}
           files: build/libs/*.jar
           body_path: CHANGELOG.md
           token: ${{ secrets.GITHUB_TOKEN }}
