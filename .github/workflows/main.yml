@@ -71,6 +71,12 @@ jobs:
           name: ForgeMod
           path: build/libs
 
+      - name: Tag
+        if: startsWith(github.ref, 'refs/heads/release/')
+        run: |
+          git tag ${{ needs.build.outputs.mod_version }}
+          git push origin ${{ needs.build.outputs.mod_version }}
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
