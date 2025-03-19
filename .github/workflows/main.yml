@@ -28,9 +28,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Install git-cliff
-        run: |
-          sudo apt update
-          npm install git-cliff
+        run: npm install -g git-cliff
 
       - name: Generate changelog
         run: git-cliff -o CHANGELOG.md
