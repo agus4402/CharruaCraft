@@ -56,7 +56,9 @@ jobs:
         run: |
           # Obtener la versión del archivo gradle.properties
           echo "$(grep '^mod_version=' gradle.properties | cut -d'=' -f2)"
+          MOD_VERSION_OUTPUT=$(awk -F'=' '/^mod_version/ {print $2}' gradle.properties | tr -d ' ')
           echo "MOD_VERSION_OUTPUT=$(grep '^mod_version=' gradle.properties | cut -d'=' -f2)" >> $GITHUB_ENV
+          echo "::set-output name=mod_version::$MOD_VERSION_OUTPUT"
           
   release:
     needs: build
@@ -66,6 +68,7 @@ jobs:
       - name: Mod Version
         run: |
           echo "${{env.MOD_VERSION_OUTPUT}}"
+          echo "${{ steps.step1.outputs.mod_version }}"
     
       # - name: Checkout repository
       #   uses: actions/checkout@v4
