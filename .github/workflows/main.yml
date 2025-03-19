@@ -48,15 +48,8 @@ jobs:
       #   with:
       #     name: ForgeMod
       #     path: build/libs/*.jar
-      - name: Get Mod Version
-        id: get_mod_version
-        run: |
-          PROPERTY_VALUE=$(./gradlew -q properties | grep "^mod_version:" | awk -F ': ' '{print $2}')
-          echo "mod_version=$PROPERTY_VALUE" >> $GITHUB_OUTPUT
-
-      # Usar la propiedad en pasos posteriores
-      - name: Display Gradle Version
-        run: echo "Gradle Version:${{ steps.get_gradle_version.outputs.mod_version }}"
+      - name: Ver contenido de gradle.properties
+        run: cat $(find . -name "gradle.properties")
           
   release:
     needs: build
