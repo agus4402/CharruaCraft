@@ -15,11 +15,11 @@ jobs:
       # - name: Checkout repository
       #   uses: actions/checkout@v4
 
-      # - name: Set up JDK 17
-      #   uses: actions/setup-java@v3
-      #   with:
-      #     distribution: 'temurin'
-      #     java-version: '17'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       # - name: Set up Gradle
       #   uses: gradle/gradle-build-action@v2
@@ -49,11 +49,20 @@ jobs:
       #     name: ForgeMod
       #     path: build/libs/*.jar
   
-    - uses: BrycensRanch/read-properties-action@v1
-      id: all
-      with:
-        file: gradle.properties
-        all: true
+      - name: Get Gradle Version
+        id: get_gradle_version
+        uses: ./.github/actions/get-gradle-property #  <-- Ruta a la acción creada
+
+        #O bien, si usa script inline:
+        #run: |
+        #  PROPERTY_VALUE=$(./gradlew -q properties | grep "^versionName:" | awk -F ': ' '{print $2}')
+        #  echo "::set-output name=version::$PROPERTY_VALUE"
+        with:
+          property-name: versionName  # Reemplaza con el nombre de tu propiedad
+
+      # Usar la propiedad en pasos posteriores
+      - name: Display Gradle Version
+        run: echo "Gradle Version:${{ steps.get_gradle_version.outputs.value }}"
           
   release:
     needs: build
