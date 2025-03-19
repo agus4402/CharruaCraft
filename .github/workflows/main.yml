@@ -49,12 +49,11 @@ jobs:
       #     name: ForgeMod
       #     path: build/libs/*.jar
   
-    - uses: guillermocalvo/gradle-properties@v3
-      id: properties
+    - uses: BrycensRanch/read-properties-action@latest
+      id: all
       with:
-        output_file: ${{ github.output }}
-        project_dir: "./gradle.properties"
-        property: mod_version
+        file: gradle.properties
+        all: true
           
   release:
     needs: build
@@ -63,7 +62,7 @@ jobs:
     steps:
       - name: Mod Version
         run: |
-          echo "${{ steps.properties.outputs.version }}"
+          echo "${{ steps.all.outputs.mod_version }}"
     
       # - name: Checkout repository
       #   uses: actions/checkout@v4
