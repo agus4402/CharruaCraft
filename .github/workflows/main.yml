@@ -53,6 +53,7 @@ jobs:
       id: properties
       with:
         output_file: ${{ github.output }}
+        change_dir: "./gradle.properties"
         property: mod_version
           
   release:
