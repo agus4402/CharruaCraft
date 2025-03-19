@@ -56,6 +56,12 @@ jobs:
           MOD_VERSION=$(grep '^mod_version=' gradle.properties | cut -d'=' -f2)
           echo "mod_version=$MOD_VERSION" >> $GITHUB_ENV
           
+      - name: Set up Git credentials
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
       - name: Create a tag from version
         run: |
           git tag "v${{ env.mod_version }}"
