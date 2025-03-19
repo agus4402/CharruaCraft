@@ -54,7 +54,7 @@ jobs:
         run: |
           MOD_VERSION=$(grep '^mod_version=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
           echo "MOD_VERSION=$MOD_VERSION"
-          echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_ENV
+          echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_OUTPUT
           
   release:
     needs: build
