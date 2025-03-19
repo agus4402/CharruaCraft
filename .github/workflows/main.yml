@@ -48,6 +48,18 @@ jobs:
         with:
           name: ForgeMod
           path: build/libs/*.jar
+
+      - name: Read mod_version from gradle.properties
+        id: version
+        run: |
+          # Obtener la versión del archivo gradle.properties
+          MOD_VERSION=$(grep '^mod_version=' gradle.properties | cut -d'=' -f2)
+          echo "mod_version=$MOD_VERSION" >> $GITHUB_ENV
+          
+      - name: Create a tag from version
+        run: |
+          git tag "v${{ env.mod_version }}"
+          git push origin "v${{ env.mod_version }}"
           
   release:
     needs: build
