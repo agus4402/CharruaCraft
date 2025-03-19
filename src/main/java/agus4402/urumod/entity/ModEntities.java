@@ -2,6 +2,7 @@ package agus4402.urumod.entity;
 
 import agus4402.urumod.Urumod;
 import agus4402.urumod.entity.custom.CapybaraEntity;
+import agus4402.urumod.entity.custom.MockingbirdEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -21,6 +22,13 @@ public class ModEntities {
                     EntityType.Builder.of(CapybaraEntity::new, MobCategory.CREATURE)
                             .sized(1, 1)
                             .build(new ResourceLocation(Urumod.MOD_ID, "capybara").toString())
+            );
+
+    public static final RegistryObject<EntityType<MockingbirdEntity>> MOCKINGBIRD =
+            ENTITY_TYPES.register("mockingbird", () ->
+                    EntityType.Builder.of(MockingbirdEntity::new, MobCategory.CREATURE)
+                            .sized(.3f, .3f)
+                            .build(new ResourceLocation(Urumod.MOD_ID, "mockingbird").toString())
             );
 
     // * -------------------------- * //

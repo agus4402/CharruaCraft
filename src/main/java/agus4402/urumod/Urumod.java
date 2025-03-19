@@ -4,7 +4,8 @@ import agus4402.urumod.block.ModBlocks;
 import agus4402.urumod.block.entity.ModBlockEntities;
 import agus4402.urumod.config.ModConfig;
 import agus4402.urumod.entity.ModEntities;
-import agus4402.urumod.entity.client.CapybaraRenderer;
+import agus4402.urumod.entity.client.renderer.CapybaraRenderer;
+import agus4402.urumod.entity.client.renderer.MockingbirdRenderer;
 import agus4402.urumod.item.ModItems;
 import agus4402.urumod.processor.ModProcessors;
 import agus4402.urumod.recipe.ModRecipes;
@@ -82,6 +83,7 @@ public class Urumod {
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CAMPFIRE_WITH_PAN.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.PAN.get(), RenderType.translucent());
             EntityRenderers.register(ModEntities.CAPYBARA.get(), CapybaraRenderer::new);
+            EntityRenderers.register(ModEntities.MOCKINGBIRD.get(), MockingbirdRenderer::new);
         }
     }
 }

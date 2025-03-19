@@ -1,11 +1,10 @@
-package agus4402.urumod.entity.client;
+package agus4402.urumod.entity.client.renderer;
 
-import agus4402.urumod.Urumod;
+import agus4402.urumod.entity.client.model.CapybaraModel;
 import agus4402.urumod.entity.custom.CapybaraEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 

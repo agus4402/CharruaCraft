@@ -30,6 +30,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		simpleItem(ModItems.OIL_BOTTLE);
 		simpleItem(ModItems.FAT);
 		withExistingParent(ModItems.CAPYBARA_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+		withExistingParent(ModItems.MOCKINGBIRD_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
 
 		// * -------------- * //
 

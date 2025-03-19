@@ -51,9 +51,15 @@ public class ModItems {
                                                                          () -> new FuelItem(new Item.Properties(), 600)
     );
 
+    // * SPAWN EGGS
+
     public static final RegistryObject<Item> CAPYBARA_SPAWN_EGG = ITEMS.register("capybara_spawn_egg",
                                                                                  () -> new ForgeSpawnEggItem(ModEntities.CAPYBARA, 0xD57E36, 0x1D0D00,
                                                                                                           new Item.Properties()));
+
+    public static final RegistryObject<Item> MOCKINGBIRD_SPAWN_EGG = ITEMS.register("mockingbird_spawn_egg",
+                                                                                 () -> new ForgeSpawnEggItem(ModEntities.MOCKINGBIRD, 0xA7C18D , 0x5A3E2B ,
+                                                                                                             new Item.Properties()));
 
     // * -------------- * //
 

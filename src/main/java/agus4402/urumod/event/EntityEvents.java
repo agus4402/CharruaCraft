@@ -13,5 +13,6 @@ public class EntityEvents {
     @SubscribeEvent
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
         event.put(ModEntities.CAPYBARA.get(), CapybaraEntity.setAttributes());
+        event.put(ModEntities.MOCKINGBIRD.get(), CapybaraEntity.setAttributes());
     }
 }

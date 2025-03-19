@@ -1,4 +1,4 @@
-package agus4402.urumod.entity.client;
+package agus4402.urumod.entity.client.model;
 
 import agus4402.core.entity.client.VariantEntityGeoModel;
 import agus4402.urumod.Urumod;
