@@ -2,7 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
 
 ### 🚀 Features
 
@@ -13,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Add Capybara entity with variants, animations, and configuration options
 - Add Mockingbird entity with AI behaviors, animations, and rendering
 - Add changelog and configuration for git-cliff
+- Update changelog to include git-cliff configuration
 
 ### 🐛 Bug Fixes
 
