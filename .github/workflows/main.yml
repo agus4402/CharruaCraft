@@ -52,7 +52,7 @@ jobs:
       - name: Extraer mod_version de gradle.properties
         id: version
         run: |
-          GRADLE_FILE=$(find . -name "gradle.properties" | head -n 1)
+          GRADLE_FILE=$(find . -name gradle.properties | head -n 1)
           echo "Archivo encontrado: $GRADLE_FILE"
           cat "$GRADLE_FILE"
           MOD_VERSION=$(grep '^mod_version=' "$GRADLE_FILE" | awk -F'=' '{print $2}' | tr -d '[:space:]')
