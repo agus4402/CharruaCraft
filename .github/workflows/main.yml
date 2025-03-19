@@ -22,33 +22,33 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # - name: Set up Gradle
-      #   uses: gradle/gradle-build-action@v2
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v2
 
-      # - name: Grant execute permission to Gradle wrapper
-      #   run: chmod +x gradlew
+      - name: Grant execute permission to Gradle wrapper
+        run: chmod +x gradlew
 
-      # - name: Install git-cliff
-      #   run: npm install -g git-cliff
+      - name: Install git-cliff
+        run: npm install -g git-cliff
 
-      # - name: Generate changelog
-      #   run: git-cliff -o CHANGELOG.md
+      - name: Generate changelog
+        run: git-cliff -o CHANGELOG.md
 
-      # - name: Build with Gradle
-      #   run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew build
 
-      # - name: Run JarJar
-      #   run: ./gradlew jarjar
+      - name: Run JarJar
+        run: ./gradlew jarjar
 
-      # - name: Find Jar File
-      #   id: find_jar
-      #   run: echo "JAR_FILE=$(ls build/libs/*.jar | head -n 1)" >> $GITHUB_ENV
+      - name: Find Jar File
+        id: find_jar
+        run: echo "JAR_FILE=$(ls build/libs/*.jar | head -n 1)" >> $GITHUB_ENV
 
-      # - name: Upload artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ForgeMod
-      #     path: build/libs/*.jar
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ForgeMod
+          path: build/libs/*.jar
 
       - name: Extraer mod_version de gradle.properties
         id: get_mod_version
@@ -67,24 +67,24 @@ jobs:
         run: |
           echo "${{ needs.build.outputs.mod_version }}"
     
-      # - name: Checkout repository
-      #   uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # - name: Download built JAR
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: ForgeMod
-      #     path: build/libs
+      - name: Download built JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: ForgeMod
+          path: build/libs
 
-      # - name: Tag
-      #   run: |
-      #     git tag "${{ env.MOD_VERSION_OUTPUT }}"
-      #     git push origin "${{ env.MOD_VERSION_OUTPUT }}"
+      - name: Tag
+        run: |
+          git tag "${{ needs.build.outputs.mod_version }}"
+          git push origin "${{ needs.build.outputs.mod_version }}"
 
-      # - name: Create GitHub Release
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     tag_name: ${{ env.MOD_VERSION_OUTPUT }}
-      #     files: build/libs/*.jar
-      #     body_path: CHANGELOG.md
-      #     token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build.outputs.mod_version }}
+          files: build/libs/*.jar
+          body_path: CHANGELOG.md
+          token: ${{ secrets.GITHUB_TOKEN }}
