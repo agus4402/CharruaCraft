@@ -32,7 +32,7 @@ jobs:
         run: npm install -g git-cliff
 
       - name: Generate changelog
-        run: git-cliff --latest -o CHANGELOG.md
+        run: git cliff --unreleased -o CHANGELOG.md
 
       - name: Build with Gradle
         run: ./gradlew build
