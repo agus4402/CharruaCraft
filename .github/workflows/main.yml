@@ -52,7 +52,7 @@ jobs:
         id: get_mod_version
         run: |
           PROPERTY_VALUE=$(./gradlew -q properties | grep "^mod_version:" | awk -F ': ' '{print $2}')
-          echo "::set-output name=mod_version::$PROPERTY_VALUE"
+          echo "mod_version=$PROPERTY_VALUE" >> $GITHUB_OUTPUT
 
       # Usar la propiedad en pasos posteriores
       - name: Display Gradle Version
