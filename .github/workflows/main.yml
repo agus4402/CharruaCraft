@@ -48,21 +48,15 @@ jobs:
       #   with:
       #     name: ForgeMod
       #     path: build/libs/*.jar
-  
-      - name: Get Gradle Version
-        id: get_gradle_version
-        uses: ./.github/actions/get-gradle-property #  <-- Ruta a la acción creada
-
-        #O bien, si usa script inline:
-        #run: |
-        #  PROPERTY_VALUE=$(./gradlew -q properties | grep "^versionName:" | awk -F ': ' '{print $2}')
-        #  echo "::set-output name=version::$PROPERTY_VALUE"
-        with:
-          property-name: versionName  # Reemplaza con el nombre de tu propiedad
+      - name: Get Mod Version
+        id: get_mod_version
+        run: |
+          PROPERTY_VALUE=$(./gradlew -q properties | grep "^mod_version:" | awk -F ': ' '{print $2}')
+          echo "::set-output name=mod_version::$PROPERTY_VALUE"
 
       # Usar la propiedad en pasos posteriores
       - name: Display Gradle Version
-        run: echo "Gradle Version:${{ steps.get_gradle_version.outputs.value }}"
+        run: echo "Gradle Version:${{ steps.get_gradle_version.outputs.mod_version }}"
           
   release:
     needs: build
