@@ -65,7 +65,7 @@ jobs:
     steps:
       - name: Mod Version
         run: |
-          echo "${{ env.MOD_VERSION }}"
+          echo "${{ needs.build.outputs.mod_version }}"
     
       # - name: Checkout repository
       #   uses: actions/checkout@v4
