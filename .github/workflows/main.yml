@@ -49,7 +49,7 @@ jobs:
       #     name: ForgeMod
       #     path: build/libs/*.jar
   
-    - uses: BrycensRanch/read-properties-action@latest
+    - uses: BrycensRanch/read-properties-action@v1
       id: all
       with:
         file: gradle.properties
