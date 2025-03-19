@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Implement ModifyHorseProcessor and enhance entity replacement logic
 - Add Capybara entity with variants, animations, and configuration options
 - Add Mockingbird entity with AI behaviors, animations, and rendering
+- Add changelog and configuration for git-cliff
 
 ### 🐛 Bug Fixes
 
