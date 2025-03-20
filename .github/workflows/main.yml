@@ -122,7 +122,7 @@ jobs:
           name: ${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
           version: ${{ needs.build.outputs.mod_version }}
           version-type: ${{ needs.build.outputs.release_type }}
-          changelog-file: CHANGELOG$-{{ needs.build.outputs.mod_version }}.md
+          changelog-file: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
 
           loaders: |
             forge
