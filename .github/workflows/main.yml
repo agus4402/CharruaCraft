@@ -72,7 +72,6 @@ jobs:
           echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
           echo "game_versions=$GAME_VERSIONS" >> $GITHUB_OUTPUT
           echo "project_id=$PROJECT_ID" >> $GITHUB_OUTPUT
-					
   github-release:
     needs: build
     runs-on: ubuntu-latest
