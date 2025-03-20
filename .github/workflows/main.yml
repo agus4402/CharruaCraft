@@ -132,7 +132,6 @@ jobs:
             
         - uses: Kir-Antipov/mc-publish@v3.3
           with:
-            name: ${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}
             curseforge-id: ${{ needs.build.outputs.project_id }}
             curseforge-token: ${{ secrets.CF_API_TOKEN }}
             changelog-file: CHANGELOG.md
@@ -142,4 +141,5 @@ jobs:
               ${{ needs.build.outputs.minecraft_version }}
             files: |
               build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
+            name: ${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}
             version-type: "${{ needs.build.outputs.release_type }}"
