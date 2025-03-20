@@ -76,49 +76,6 @@ jobs:
           echo "java=$JAVA" >> $GITHUB_OUTPUT
           echo "project_id=$PROJECT_ID" >> $GITHUB_OUTPUT
           echo "github_branch=$GITHUB_BRANCH" >> $GITHUB_OUTPUT
-    # github-release:
-    #   needs: build
-    #   runs-on: ubuntu-latest
-    #   steps:
-    #     - name: Mod Info
-    #       run: |
-    #         echo "mod_version: ${{ needs.build.outputs.mod_version }}"
-    #         echo "mod_id: ${{ needs.build.outputs.mod_id }}"
-    #         echo "minecraft_version: ${{ needs.build.outputs.minecraft_version }}"
-    #         echo "game_endpoint: ${{ needs.build.outputs.game_endpoint }}"
-    #         echo "relations: ${{ needs.build.outputs.game_versions }}"
-    #         echo "release_type: ${{ needs.build.outputs.release_type }}"
-    #         echo "game_versions: ${{ needs.build.outputs.mod_id }}"
-    #         echo "java: ${{ needs.build.outputs.java }}"
-    #         echo "project_id: ${{ needs.build.outputs.project_id }}"
-
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-
-  #     - name: Download built JAR
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: ForgeMod
-  #         path: build/libs
-
-  #     - name: Tag
-  #       run: |
-  #         git tag "${{ needs.build.outputs.mod_version }}"
-  #         git push origin "${{ needs.build.outputs.mod_version }}"
-
-  #     - name: Install git-cliff
-  #       run: npm install -g git-cliff
-
-  #     - name: Generate changelog
-  #       run: git cliff --tag ${{ needs.build.outputs.mod_version }} -o CHANGELOG.md
-
-  #     - name: Create GitHub Release
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         tag_name: ${{ needs.build.outputs.mod_version }}
-  #         files: build/libs/*.jar
-  #         body_path: CHANGELOG.md
-  #         token: ${{ secrets.GITHUB_TOKEN }}
   curseforge-release:
     runs-on: ubuntu-latest
     needs: [ build ]
@@ -127,6 +84,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Generate changelog
+        run: git cliff --tag ${{ needs.build.outputs.mod_version }} -o CHANGELOG.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build.outputs.mod_version }}
+          files: build/libs/*.jar
+          body_path: CHANGELOG${{ needs.build.outputs.mod_version }}.md
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download built JAR
         uses: actions/download-artifact@v4
@@ -148,10 +116,10 @@ jobs:
           files: |
             build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
 
-          name: ${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}
+          name: ${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
           version: ${{ needs.build.outputs.mod_version }}
           version-type: ${{ needs.build.outputs.release_type }}
-          changelog-file: CHANGELOG.md
+          changelog-file: CHANGELOG${{ needs.build.outputs.mod_version }}.md
 
           loaders: |
             forge
