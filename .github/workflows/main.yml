@@ -135,7 +135,7 @@ jobs:
             curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
             github-tag: ${{ needs.build.outputs.mod_version }}
-            github-draft: false
+            github-draft: true
             github-prerelease: false
             github-token: ${{ secrets.GITHUB_TOKEN }}
      
