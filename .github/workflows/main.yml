@@ -36,12 +36,6 @@ jobs:
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x gradlew
 
-      - name: Install git-cliff
-        run: npm install -g git-cliff
-
-      - name: Generate changelog
-        run: git cliff --unreleased -o CHANGELOG.md
-
       - name: Build with Gradle
         run: ./gradlew build
 
@@ -79,6 +73,13 @@ jobs:
           echo "game_versions=$GAME_VERSIONS" >> $GITHUB_OUTPUT
           echo "java=$JAVA" >> $GITHUB_OUTPUT
           echo "project_id=$PROJECT_ID" >> $GITHUB_OUTPUT
+
+      - name: Install git-cliff
+        run: npm install -g git-cliff
+
+      - name: Generate changelog
+        run: git cliff --tag ${{ env.MOD_VERSION }} -o CHANGELOG.md
+    
   github-release:
     needs: build
     runs-on: ubuntu-latest
