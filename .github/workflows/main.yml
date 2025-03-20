@@ -155,3 +155,6 @@ jobs:
             ${{ needs.build.outputs.minecraft_version }}
           java: |
             ${{ needs.build.outputs.java }}
+          retry-attempts: 2
+          retry-delay: 10000
+          fail-mode: warn
