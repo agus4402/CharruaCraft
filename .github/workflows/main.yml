@@ -2,7 +2,7 @@ name: Build and Release Forge Mod
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
       - main
     tags:
@@ -18,8 +18,10 @@ jobs:
       game_endpoint: ${{ steps.get_mod_version.outputs.game_endpoint }}
       relations: ${{ steps.get_mod_version.outputs.relations }}
       game_versions: ${{ steps.get_mod_version.outputs.game_versions }}
+      release_type: ${{ steps.get_mod_version.outputs.release_type }}
       java: ${{ steps.get_mod_version.outputs.java }}
       project_id: ${{ steps.get_mod_version.outputs.project_id }}
+      github_branch: ${{ steps.get_mod_version.outputs.github_branch }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -64,6 +66,7 @@ jobs:
           GAME_VERSIONS=$(grep '^game_versions=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
           JAVA=$(grep '^java=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
           PROJECT_ID=$(grep '^project_id=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
+          GITHUB_BRANCH=$(grep '^github_branch=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
           echo "mod_version=$MOD_VERSION" >> $GITHUB_OUTPUT
           echo "mod_id=$MOD_ID" >> $GITHUB_OUTPUT
           echo "minecraft_version=$MINECRAFT_VERSION" >> $GITHUB_OUTPUT
@@ -73,85 +76,73 @@ jobs:
           echo "game_versions=$GAME_VERSIONS" >> $GITHUB_OUTPUT
           echo "java=$JAVA" >> $GITHUB_OUTPUT
           echo "project_id=$PROJECT_ID" >> $GITHUB_OUTPUT
-  # github-release:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Mod Info
-  #       run: |
-  #         echo "mod_version: ${{ needs.build.outputs.mod_version }}"
-  #         echo "mod_id: ${{ needs.build.outputs.mod_id }}"
-  #         echo "minecraft_version: ${{ needs.build.outputs.minecraft_version }}"
-  #         echo "game_endpoint: ${{ needs.build.outputs.game_endpoint }}"
-  #         echo "relations: ${{ needs.build.outputs.game_versions }}"
-  #         echo "release_type: ${{ needs.build.outputs.release_type }}"
-  #         echo "game_versions: ${{ needs.build.outputs.mod_id }}"
-  #         echo "java: ${{ needs.build.outputs.java }}"
-  #         echo "project_id: ${{ needs.build.outputs.project_id }}"
-    
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-
-  #     - name: Download built JAR
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: ForgeMod
-  #         path: build/libs
-
-  #     - name: Tag
-  #       run: |
-  #         git tag "${{ needs.build.outputs.mod_version }}"
-  #         git push origin "${{ needs.build.outputs.mod_version }}"
-
-  #     - name: Install git-cliff
-  #       run: npm install -g git-cliff
-
-  #     - name: Generate changelog
-  #       run: git cliff --tag ${{ needs.build.outputs.mod_version }} -o CHANGELOG.md
-
-  #     - name: Create GitHub Release
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         tag_name: ${{ needs.build.outputs.mod_version }}
-  #         files: build/libs/*.jar
-  #         body_path: CHANGELOG.md
-  #         token: ${{ secrets.GITHUB_TOKEN }}
+          echo "github_branch=$GITHUB_BRANCH" >> $GITHUB_OUTPUT
   curseforge-release:
-      runs-on: ubuntu-latest
-      needs: [build]
-      permissions:
-        contents: write
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
-        
-        - name: Download built JAR
-          uses: actions/download-artifact@v4
-          with:
-            name: ForgeMod
-            path: build/libs
-            
-        - uses: Kir-Antipov/mc-publish@v3.3.0
-          with:
-            curseforge-id: ${{ needs.build.outputs.project_id }}
-            curseforge-token: ${{ secrets.CF_API_TOKEN }}
-            
-            github-tag: ${{ needs.build.outputs.mod_version }}
-            github-draft: true
-            github-prerelease: false
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-             
-            files: |
-              build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            name: ""
-            version: ${{ needs.build.outputs.mod_version }}
-            version-type: "${{ needs.build.outputs.release_type }}"
-            changelog-file: CHANGELOG.md
-            
-            loaders: |
-              forge
-            game-versions: |
-              ${{ needs.build.outputs.minecraft_version }}
-            java: |
-              ${{ needs.build.outputs.java }}
+      - name: Mod Info
+        run: |
+          echo "mod_version: ${{ needs.build.outputs.mod_version }}"
+          echo "mod_id: ${{ needs.build.outputs.mod_id }}"
+          echo "minecraft_version: ${{ needs.build.outputs.minecraft_version }}"
+          echo "game_endpoint: ${{ needs.build.outputs.game_endpoint }}"
+          echo "relations: ${{ needs.build.outputs.game_versions }}"
+          echo "release_type: ${{ needs.build.outputs.release_type }}"
+          echo "game_versions: ${{ needs.build.outputs.game_versions }}"
+          echo "java: ${{ needs.build.outputs.java }}"
+          echo "project_id: ${{ needs.build.outputs.project_id }}"
+
+      - name: Install git-cliff
+        run: npm install -g git-cliff
+
+      - name: Generate changelog
+        run: git cliff --tag "$(git describe --tags --abbrev=0)" -o CHANGELOG-${{ needs.build.outputs.mod_version }}.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build.outputs.mod_version }}
+          files: build/libs/*.jar
+          body_path: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download built JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: ForgeMod
+          path: build/libs
+
+      - uses: Kir-Antipov/mc-publish@v3.3.0
+        with:
+          curseforge-id: ${{ needs.build.outputs.project_id }}
+          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+
+          github-tag: ${{ needs.build.outputs.mod_version }}
+          github-draft: false
+          github-prerelease: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-commitish: ${{ needs.build.outputs.github_branch }}
+
+          files: |
+            build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
+
+          name: ${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
+          version: ${{ needs.build.outputs.mod_version }}
+          version-type: ${{ needs.build.outputs.release_type }}
+          changelog-file: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
+
+          loaders: |
+            forge
+          game-versions: |
+            ${{ needs.build.outputs.minecraft_version }}
+          java: |
+            ${{ needs.build.outputs.java }}
+          retry-attempts: 2
+          retry-delay: 10000
+          fail-mode: warn
