@@ -133,16 +133,17 @@ jobs:
           with:
             curseforge-id: ${{ needs.build.outputs.project_id }}
             curseforge-token: ${{ secrets.CF_API_TOKEN }}
-
+            curseforge-name: ${{ needs.build.outputs.mod_id }}
+            
             github-tag: ${{ needs.build.outputs.mod_version }}
             github-draft: true
             github-prerelease: false
             github-token: ${{ secrets.GITHUB_TOKEN }}
-     
+            github-name: ${{ needs.build.outputs.mod_id }}
+             
             files: |
               build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
-              
-            name: ${{ needs.build.outputs.mod_id }}
+            
             version: ${{ needs.build.outputs.mod_version }}
             version-type: "${{ needs.build.outputs.release_type }}"
             changelog-file: CHANGELOG.md
