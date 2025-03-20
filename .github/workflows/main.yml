@@ -110,7 +110,7 @@ jobs:
 
   curseforge-release:
       runs-on: ubuntu-latest
-      needs: build
+      needs: [build, github-release]
       steps:
         - name: Checkout repository
           uses: actions/checkout@v4
