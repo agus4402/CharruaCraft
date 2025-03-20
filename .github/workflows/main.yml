@@ -85,6 +85,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Mod Info
+        run: |
+          echo "mod_version: ${{ needs.build.outputs.mod_version }}"
+          echo "mod_id: ${{ needs.build.outputs.mod_id }}"
+          echo "minecraft_version: ${{ needs.build.outputs.minecraft_version }}"
+          echo "game_endpoint: ${{ needs.build.outputs.game_endpoint }}"
+          echo "relations: ${{ needs.build.outputs.game_versions }}"
+          echo "release_type: ${{ needs.build.outputs.release_type }}"
+          echo "game_versions: ${{ needs.build.outputs.mod_id }}"
+          echo "java: ${{ needs.build.outputs.java }}"
+          echo "project_id: ${{ needs.build.outputs.project_id }}"
+
       - name: Install git-cliff
         run: npm install -g git-cliff
 
