@@ -120,16 +120,15 @@ jobs:
           uses: actions/download-artifact@v4
           with:
             name: ForgeMod
-            path: build/libs/
+            path: build/libs
             
-        - name: Upload to CurseForge
-          uses: itsmeow/curseforge-upload@v3
+        - uses: Kir-Antipov/mc-publish@v3.3
           with:
-            file_path: "build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar"
-            game_endpoint: "minecraft"
-            relations: "${{ needs.build.outputs.relations }}"
-            release_type: "${{ needs.build.outputs.release_type }}"
-            game_versions: "${{ needs.build.outputs.game_versions }}"
-            project_id: "${{ needs.build.outputs.project_id }}"
-            token: "${{ secrets.CF_API_TOKEN }}"
-            changelog: CHANGELOG.md
+            curseforge-id: ${{ needs.build.outputs.project_id }}
+            curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+            changelog-file: CHANGELOG.md
+            game-versions: |
+              ${{ needs.build.outputs.mod_version }}
+            files: |
+              build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
+            version-type: "${{ needs.build.outputs.release_type }}"
