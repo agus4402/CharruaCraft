@@ -20,6 +20,7 @@ jobs:
       game_versions: ${{ steps.get_mod_version.outputs.game_versions }}
       java: ${{ steps.get_mod_version.outputs.java }}
       project_id: ${{ steps.get_mod_version.outputs.project_id }}
+      github_branch: ${{ steps.get_mod_version.outputs.github_branch }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -64,6 +65,7 @@ jobs:
           GAME_VERSIONS=$(grep '^game_versions=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
           JAVA=$(grep '^java=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
           PROJECT_ID=$(grep '^project_id=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
+          GITHUB_BRANCH=$(grep '^github_branch=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
           echo "mod_version=$MOD_VERSION" >> $GITHUB_OUTPUT
           echo "mod_id=$MOD_ID" >> $GITHUB_OUTPUT
           echo "minecraft_version=$MINECRAFT_VERSION" >> $GITHUB_OUTPUT
@@ -73,6 +75,7 @@ jobs:
           echo "game_versions=$GAME_VERSIONS" >> $GITHUB_OUTPUT
           echo "java=$JAVA" >> $GITHUB_OUTPUT
           echo "project_id=$PROJECT_ID" >> $GITHUB_OUTPUT
+          echo "github_branch=$GITHUB_BRANCH" >> $GITHUB_OUTPUT
     # github-release:
     #   needs: build
     #   runs-on: ubuntu-latest
@@ -137,16 +140,17 @@ jobs:
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
           github-tag: ${{ needs.build.outputs.mod_version }}
-          github-draft: true
+          github-draft: false
           github-prerelease: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-commitish: ${{ needs.build.outputs.github_branch }}
 
           files: |
             build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
 
-          name: ${{ needs.build.outputs.mod_id }}
+          name: ${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}
           version: ${{ needs.build.outputs.mod_version }}
-          version-type: "${{ needs.build.outputs.release_type }}"
+          version-type: ${{ needs.build.outputs.release_type }}
           changelog-file: CHANGELOG.md
 
           loaders: |
