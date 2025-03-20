@@ -125,7 +125,7 @@ jobs:
         - name: Upload to CurseForge
           uses: itsmeow/curseforge-upload@v3
           with:
-            file_path: "build/libs/${{ needs.build.outputs.mod-id }}-${{ needs.build.outputs.mod_version }}.jar"
+            file_path: "build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar"
             game_endpoint: "minecraft"
             relations: "${{ needs.build.outputs.relations }}"
             release_type: "${{ needs.build.outputs.release_type }}"
