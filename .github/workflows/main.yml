@@ -131,7 +131,7 @@ jobs:
             name: ForgeMod
             path: build/libs
             
-        - uses: Kir-Antipov/mc-publish@v3.3
+        - uses: Kir-Antipov/mc-publish@v3.3.0
           with:
             curseforge-id: ${{ needs.build.outputs.project_id }}
             curseforge-token: ${{ secrets.CF_API_TOKEN }}
