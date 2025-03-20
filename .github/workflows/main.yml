@@ -85,15 +85,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install git-cliff
+        run: npm install -g git-cliff
+
       - name: Generate changelog
-        run: git cliff --tag ${{ needs.build.outputs.mod_version }} -o CHANGELOG.md
+        run: git cliff --tag "$(git describe --tags --abbrev=0)" -o CHANGELOG-${{ needs.build.outputs.mod_version }}.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.build.outputs.mod_version }}
           files: build/libs/*.jar
-          body_path: CHANGELOG${{ needs.build.outputs.mod_version }}.md
+          body_path: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download built JAR
@@ -119,7 +122,7 @@ jobs:
           name: ${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
           version: ${{ needs.build.outputs.mod_version }}
           version-type: ${{ needs.build.outputs.release_type }}
-          changelog-file: CHANGELOG${{ needs.build.outputs.mod_version }}.md
+          changelog-file: CHANGELOG$-{{ needs.build.outputs.mod_version }}.md
 
           loaders: |
             forge
