@@ -143,3 +143,4 @@ jobs:
               build/libs/${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}.jar
             name: ${{ needs.build.outputs.mod_id }}-${{ needs.build.outputs.mod_version }}
             version-type: "${{ needs.build.outputs.release_type }}"
+            github-token: ${{ secrets.GITHUB_TOKEN }}
