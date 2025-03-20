@@ -73,13 +73,6 @@ jobs:
           echo "game_versions=$GAME_VERSIONS" >> $GITHUB_OUTPUT
           echo "java=$JAVA" >> $GITHUB_OUTPUT
           echo "project_id=$PROJECT_ID" >> $GITHUB_OUTPUT
-
-      - name: Install git-cliff
-        run: npm install -g git-cliff
-
-      - name: Generate changelog
-        run: git cliff --tag ${{ needs.build.outputs.mod_version }} -o CHANGELOG.md
-    
   github-release:
     needs: build
     runs-on: ubuntu-latest
@@ -109,6 +102,12 @@ jobs:
         run: |
           git tag "${{ needs.build.outputs.mod_version }}"
           git push origin "${{ needs.build.outputs.mod_version }}"
+
+      - name: Install git-cliff
+        run: npm install -g git-cliff
+
+      - name: Generate changelog
+        run: git cliff --tag ${{ needs.build.outputs.mod_version }} -o CHANGELOG.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
