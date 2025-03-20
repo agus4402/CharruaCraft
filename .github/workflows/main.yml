@@ -78,7 +78,7 @@ jobs:
         run: npm install -g git-cliff
 
       - name: Generate changelog
-        run: git cliff --tag ${{ env.MOD_VERSION }} -o CHANGELOG.md
+        run: git cliff --tag ${{ needs.build.outputs.mod_version }} -o CHANGELOG.md
     
   github-release:
     needs: build
