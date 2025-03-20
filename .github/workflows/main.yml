@@ -17,7 +17,6 @@ jobs:
       relations: ${{ steps.get_mod_version.outputs.relations }}
       game_versions: ${{ steps.get_mod_version.outputs.game_versions }}
       project_id: ${{ steps.get_mod_version.outputs.project_id }}
-			
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
