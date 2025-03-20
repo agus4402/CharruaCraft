@@ -18,6 +18,7 @@ jobs:
       game_endpoint: ${{ steps.get_mod_version.outputs.game_endpoint }}
       relations: ${{ steps.get_mod_version.outputs.relations }}
       game_versions: ${{ steps.get_mod_version.outputs.game_versions }}
+      release_type: ${{ steps.get_mod_version.outputs.release_type }}
       java: ${{ steps.get_mod_version.outputs.java }}
       project_id: ${{ steps.get_mod_version.outputs.project_id }}
       github_branch: ${{ steps.get_mod_version.outputs.github_branch }}
