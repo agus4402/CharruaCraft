@@ -1,17 +1,23 @@
 name: Build and Release Forge Mod
 
 on:
-  push:
+  pull_request:
     branches:
       - main
     tags:
-      - 'v*.*.*' # Detecta versiones como v1.0.0
+      - '*.*.*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
       mod_version: ${{ steps.get_mod_version.outputs.mod_version }}
+      mod_id: ${{ steps.get_mod_version.outputs.mod_id }}
+      game_endpoint: ${{ steps.get_mod_version.outputs.game_endpoint }}
+      relations: ${{ steps.get_mod_version.outputs.relations }}
+      game_versions: ${{ steps.get_mod_version.outputs.game_versions }}
+      project_id: ${{ steps.get_mod_version.outputs.project_id }}
+			
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -52,20 +58,35 @@ jobs:
 
       - name: Extraer mod_version de gradle.properties
         id: get_mod_version
-        
         run: |
           MOD_VERSION=$(grep '^mod_version=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
-          echo "mod_version=$MOD_VERSION"
+          MOD_ID=$(grep '^mod_id=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
+          GAME_ENDPOINT=$(grep '^game_endpoint=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
+          RELATIONS=$(grep '^relations=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
+          RELEASE_TYPE=$(grep '^release_type=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
+          GAME_VERSIONS=$(grep '^game_versions=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
+          PROJECT_ID=$(grep '^project_id=' gradle.properties | awk -F'=' '{print $2}' | tr -d '[:space:]')
           echo "mod_version=$MOD_VERSION" >> $GITHUB_OUTPUT
-          
-  release:
+          echo "mod_id=$MOD_ID" >> $GITHUB_OUTPUT
+          echo "game_endpoint=$GAME_ENDPOINT" >> $GITHUB_OUTPUT
+          echo "relations=$RELATIONS" >> $GITHUB_OUTPUT
+          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+          echo "game_versions=$GAME_VERSIONS" >> $GITHUB_OUTPUT
+          echo "project_id=$PROJECT_ID" >> $GITHUB_OUTPUT
+					
+  github-release:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
-      - name: Mod Version
+      - name: Mod Info
         run: |
-          echo "${{ needs.build.outputs.mod_version }}"
+          echo "mod_version: ${{ needs.build.outputs.mod_version }}"
+          echo "mod_id: ${{ needs.build.outputs.mod_id }}"
+          echo "game_endpoint: ${{ needs.build.outputs.game_endpoint }}"
+          echo "relations: ${{ needs.build.outputs.game_versions }}"
+          echo "release_type: ${{ needs.build.outputs.release_type }}"
+          echo "game_versions: ${{ needs.build.outputs.mod_id }}"
+          echo "project_id: ${{ needs.build.outputs.project_id }}"
     
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -88,3 +109,28 @@ jobs:
           files: build/libs/*.jar
           body_path: CHANGELOG.md
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  curseforge-release:
+      runs-on: ubuntu-latest
+      needs: build
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+        
+        - name: Download built JAR
+          uses: actions/download-artifact@v3
+          with:
+            name: ForgeMod
+            path: build/libs/
+            
+        - name: Upload to CurseForge
+          uses: itsmeow/curseforge-upload@v3
+          with:
+            file_path: "build/libs/${{ needs.build.outputs.mod-id }}-${{ needs.build.outputs.mod_version }}.jar"
+            game_endpoint: "minecraft"
+            relations: "${{ needs.build.outputs.relations }}"
+            release_type: "${{ needs.build.outputs.release_type }}"
+            game_versions: "${{ needs.build.outputs.game_versions }}"
+            project_id: "${{ needs.build.outputs.project_id }}"
+            token: "${{ secrets.CF_API_TOKEN }}"
+            changelog: CHANGELOG.md
