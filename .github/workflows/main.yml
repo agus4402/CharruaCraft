@@ -2,7 +2,7 @@ name: Build and Release Forge Mod
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
       - main
     tags:
@@ -94,7 +94,7 @@ jobs:
           echo "game_endpoint: ${{ needs.build.outputs.game_endpoint }}"
           echo "relations: ${{ needs.build.outputs.game_versions }}"
           echo "release_type: ${{ needs.build.outputs.release_type }}"
-          echo "game_versions: ${{ needs.build.outputs.mod_id }}"
+          echo "game_versions: ${{ needs.build.outputs.game_versions }}"
           echo "java: ${{ needs.build.outputs.java }}"
           echo "project_id: ${{ needs.build.outputs.project_id }}"
 
