@@ -1,0 +1,38 @@
+name: Generate Changelog
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  generate_changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: --latest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          OUTPUT: CHANGELOG.md
+
+      - name: Changelog
+        run: echo CHANGELOG.md
+
+      - name: Upload CHANGELOG as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHANGELOG.md
+          path: CHANGELOG.md
