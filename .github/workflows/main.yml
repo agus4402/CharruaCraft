@@ -103,9 +103,15 @@ jobs:
         id: git-cliff
         with:
           config: cliff.toml
-          args: -vv --latest --strip header
+          args: --latest
         env:
           OUTPUT: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHANGELOG
+          path: build/logs/*.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
