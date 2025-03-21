@@ -23,7 +23,7 @@ jobs:
         id: git-cliff
         with:
           config: cliff.toml
-          args: --latest
+          args: --unreleased
           github_token: ${{ secrets.GITHUB_TOKEN }}
         env:
           OUTPUT: CHANGELOG.md
