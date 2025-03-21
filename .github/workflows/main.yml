@@ -98,11 +98,14 @@ jobs:
           echo "java: ${{ needs.build.outputs.java }}"
           echo "project_id: ${{ needs.build.outputs.project_id }}"
 
-      - name: Install git-cliff
-        run: npm install -g git-cliff
-
-      - name: Generate changelog
-        run: git cliff --latest -o CHANGELOG-${{ needs.build.outputs.mod_version }}.md
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: -vv --latest --strip header
+        env:
+          OUTPUT: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
