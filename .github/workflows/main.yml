@@ -104,14 +104,15 @@ jobs:
         with:
           config: cliff.toml
           args: --latest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
         env:
           OUTPUT: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: CHANGELOG
-          path: build/logs/*.md
+          name: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
+          path: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
