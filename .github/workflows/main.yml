@@ -2,11 +2,6 @@ name: Build and Release Forge Mod
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    tags:
-      - '*.*.*'
 
 jobs:
   build:
@@ -103,7 +98,7 @@ jobs:
         id: git-cliff
         with:
           config: cliff.toml
-          args: --latest
+          args: --unreleased
           github_token: ${{ secrets.GITHUB_TOKEN }}
         env:
           OUTPUT: CHANGELOG-${{ needs.build.outputs.mod_version }}.md
