@@ -102,7 +102,7 @@ jobs:
         run: npm install -g git-cliff
 
       - name: Generate changelog
-        run: git cliff --range "$(git describe --tags --abbrev=0)..HEAD" -o CHANGELOG-${{ needs.build.outputs.mod_version }}.md
+        run: git cliff --unreleased -o CHANGELOG-${{ needs.build.outputs.mod_version }}.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
