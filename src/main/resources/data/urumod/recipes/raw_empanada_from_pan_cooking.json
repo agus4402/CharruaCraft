@@ -5,6 +5,9 @@
       "item": "urumod:raw_empanada"
     }
   ],
+  "fuel": {
+    "tag": "urumod:pan_oil"
+  },
   "result": {
     "count": 1,
     "item": "urumod:empanada"

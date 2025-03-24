@@ -22,11 +22,13 @@ public class PanRecipe implements Recipe<SimpleContainer> {
     private final NonNullList<Ingredient> inputItems;
     private final ItemStack output;
     private final ResourceLocation id;
+    private final Ingredient fuel;
 
-    public PanRecipe(NonNullList<Ingredient> inputItems, ItemStack output, ResourceLocation id) {
+    public PanRecipe(NonNullList<Ingredient> inputItems, ItemStack output, ResourceLocation id, Ingredient fuel) {
         this.inputItems = inputItems;
         this.output = output;
         this.id = id;
+        this.fuel = fuel;
     }
 
     @Override
@@ -70,6 +72,14 @@ public class PanRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
+    public Ingredient getFuel() {
+        return fuel;
+    }
+
+    public int getBurnTime() {
+        return -1;
+    }
+
     public static class Type implements RecipeType<PanRecipe>{
         public static final Type INSTANCE = new Type();
         public static final String ID = RECIPE_PATH;
@@ -87,7 +97,8 @@ public class PanRecipe implements Recipe<SimpleContainer> {
             for (int i = 0; i < inputs.size(); i++){
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
-            return new PanRecipe(inputs, output, resourceLocation);
+            Ingredient fuel = Ingredient.fromJson(GsonHelper.getAsJsonObject(serializedRecipe, "fuel"));
+            return new PanRecipe(inputs, output, resourceLocation, fuel);
         }
 
         @Override
@@ -97,7 +108,8 @@ public class PanRecipe implements Recipe<SimpleContainer> {
                 inputs.set(i, Ingredient.fromNetwork(friendlyByteBuf));
             }
             ItemStack output = friendlyByteBuf.readItem();
-            return new PanRecipe(inputs, output, resourceLocation);
+            Ingredient fuel = Ingredient.fromNetwork(friendlyByteBuf);
+            return new PanRecipe(inputs, output, resourceLocation, fuel);
         }
 
         @Override
@@ -107,6 +119,7 @@ public class PanRecipe implements Recipe<SimpleContainer> {
                 ingredient.toNetwork(friendlyByteBuf);
             }
             friendlyByteBuf.writeItemStack(recipe.getResultItem(null), false);
+            recipe.getFuel().toNetwork(friendlyByteBuf);
         }
     }
 }

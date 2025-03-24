@@ -1,8 +1,10 @@
 {
   "tab.mod_tab.title": "Urumod",
+
   "_comment": "Blocks",
   "block.urumod.pan": "Pan",
   "block.urumod.campfire_with_pan": "Campfire(Supports)",
+
   "_comment": "Items",
   "item.urumod.torta_frita": "Torta Frita",
   "item.urumod.raw_torta_frita": "Torta Frita Dough",
@@ -12,9 +14,14 @@
   "item.urumod.empanada": "Empanada",
   "item.urumod.raw_empanada": "Raw Empanada",
   "item.urumod.fat": "Animal Fat",
+
   "_comment": "Spawn Eggs",
   "item.urumod.capybara_spawn_egg": "Capybara Spawn Egg",
   "item.urumod.mockingbird_spawn_egg": "Mockingbird Spawn Egg",
+
+  "_comment": "GUI",
+  "gui.urumod.category.fuel.smeltCount": "Cooks %s items",
+  "gui.urumod.category.fuel.smeltCount.single": "Cooks 1 item",
 
   "_comment": "Config",
   "config.urumod.capybara_looks_into_player": "Capybara looks into player"

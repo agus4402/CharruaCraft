@@ -2,7 +2,7 @@ package agus4402.urumod.item;
 
 import agus4402.urumod.Urumod;
 import agus4402.urumod.entity.ModEntities;
-import agus4402.urumod.item.custom.FuelItem;
+import agus4402.urumod.item.custom.OilItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -44,11 +44,11 @@ public class ModItems {
     );
 
     public static final RegistryObject<Item> OIL_BOTTLE = ITEMS.register("oil_bottle",
-                                                                           () -> new FuelItem(new Item.Properties(), 500)
+                                                                         () -> new OilItem(new Item.Properties(), 500)
     );
 
     public static final RegistryObject<Item> FAT = ITEMS.register("fat",
-                                                                         () -> new FuelItem(new Item.Properties(), 600)
+                                                                  () -> new OilItem(new Item.Properties(), 600)
     );
 
     // * SPAWN EGGS

@@ -2,14 +2,12 @@ package agus4402.urumod.block.entity;
 
 import agus4402.urumod.block.ModBlocks;
 import agus4402.urumod.block.custom.Pan;
-import agus4402.urumod.item.custom.FuelItem;
+import agus4402.urumod.item.custom.OilItem;
 import agus4402.urumod.recipe.PanRecipe;
 import agus4402.urumod.screen.PanMenu;
 import agus4402.urumod.sound.ModSounds;
-import agus4402.urumod.utils.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -32,7 +30,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -41,7 +38,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,7 +68,7 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
             }
 
             if (slot == OIL_SLOT) {
-                return isCompatibleFuel(stack);
+                return isValidFuelForAnyRecipe(stack);
             }
 
             return super.isItemValid(slot, stack);
@@ -93,6 +89,18 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
             }
         }
         return false; // The stack is not a valid ingredient for any recipe.
+    }
+
+    private boolean isValidFuelForAnyRecipe(ItemStack stack) {
+        List<PanRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(PanRecipe.Type.INSTANCE);
+
+        for (PanRecipe recipe : allRecipes) {
+            Ingredient fuel = recipe.getFuel();
+            if (fuel.test(stack)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static final int INPUT_SLOT = 0;
@@ -324,14 +332,15 @@ public class PanBlockEntity extends BlockEntity implements MenuProvider {
         ItemStack fuel = itemHandler.getStackInSlot(OIL_SLOT);
 
         if (isCompatibleFuel(fuel) && !fuel.isEmpty() && oilBurnTime <= 0) {
-            oilBurnTime = ((FuelItem) fuel.getItem()).getBurnTime();
+            oilBurnTime = ((OilItem) fuel.getItem()).getBurnTime();
             totalOilBurnTime = oilBurnTime;
             itemHandler.extractItem(OIL_SLOT, 1, false);
         }
     }
 
-    public boolean isCompatibleFuel(ItemStack fuel){
-        return fuel.is(ModTags.Items.PAN_OIL) && fuel.getItem() instanceof  FuelItem;
+    public boolean isCompatibleFuel(ItemStack fuel) {
+        Optional<PanRecipe> recipe = getCurrentRecipe();
+        return isValidFuelForAnyRecipe(fuel) && fuel.getItem() instanceof OilItem;
     }
 
 

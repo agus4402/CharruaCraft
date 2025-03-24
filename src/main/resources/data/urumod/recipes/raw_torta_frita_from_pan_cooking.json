@@ -5,6 +5,9 @@
       "item": "urumod:raw_torta_frita"
     }
   ],
+  "fuel": {
+    "tag": "urumod:pan_oil"
+  },
   "result": {
     "count": 1,
     "item": "urumod:torta_frita"

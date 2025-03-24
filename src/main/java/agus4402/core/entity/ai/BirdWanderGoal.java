@@ -76,7 +76,6 @@ public class BirdWanderGoal extends WaterAvoidingRandomFlyingGoal {
     @Override
     public void tick() {
         super.tick();
-        System.out.println("Fly time: " + bird.timeFlying);
         if (bird.onGround() && isLanding) {
             isLanding = false;
             onLand();

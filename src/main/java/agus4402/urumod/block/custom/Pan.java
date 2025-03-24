@@ -65,12 +65,11 @@ public class Pan extends BaseEntityBlock {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof PanBlockEntity) {
                 NetworkHooks.openScreen(((ServerPlayer)pPlayer), (PanBlockEntity)entity, pPos);
-                return InteractionResult.SUCCESS;
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
-        return InteractionResult.PASS;
+        return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     @Override
